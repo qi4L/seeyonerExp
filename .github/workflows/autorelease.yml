@@ -5,37 +5,6 @@ on:
     branches: [master]
 
 jobs:
-  servers-build:
-    name: Release Build Server
-    if: startsWith( github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - name: Go 1.20
-        uses: actions/setup-go@v4
-        with:
-          go-version: "^1.20"
-
-      - name: OS Packages
-        run: |
-          sudo apt-get update --fix-missing && sudo apt-get -y install \
-          git build-essential zlib1g zlib1g-dev wget zip unzip
-
-      - name: Check Out Code
-        uses: actions/checkout@v3
-
-      - name: Git Fetch Tags
-        run: git fetch --prune --unshallow --tags -f
-
-      - name: Make
-        run: make servers
-
-      - name: Server Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: servers
-          path: ./sliver-server_*
-
   clients-build:
     name: Release Build Client
     if: startsWith( github.ref, 'refs/tags/v')
@@ -60,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: clients
-          path: ./sliver-client_*
+          path: ./seeyoner-exp_*
 
   tagged-release:
     needs: [servers-build, clients-build]
@@ -90,45 +59,45 @@ jobs:
       # Linux
       - name: Linux 386 (Client Only)
         run: |
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_linux-386.sig --detach-sig ./artifacts/sliver-client_linux-386
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_linux-386.sig --detach-sig ./artifacts/seeyoner-exp_linux-386
       - name: Linux AMD64
         run: |
           gpg --default-key 4449039C --output ./artifacts/sliver-server_linux-amd64.sig --detach-sig ./artifacts/sliver-server_linux-amd64
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_linux-amd64.sig --detach-sig ./artifacts/sliver-client_linux-amd64
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_linux-amd64.sig --detach-sig ./artifacts/seeyoner-exp_linux-amd64
       - name: Linux ARM64
         run: |
           gpg --default-key 4449039C --output ./artifacts/sliver-server_linux-arm64.sig --detach-sig ./artifacts/sliver-server_linux-arm64
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_linux-arm64.sig --detach-sig ./artifacts/sliver-client_linux-arm64
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_linux-arm64.sig --detach-sig ./artifacts/seeyoner-exp_linux-arm64
 
       # Windows
       - name: Windows 386 (Client Only)
         run: |
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_windows-386.sig --detach-sig ./artifacts/sliver-client_windows-386.exe
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_windows-386.sig --detach-sig ./artifacts/seeyoner-exp_windows-386.exe
       - name: Windows AMD64
         run: |
           gpg --default-key 4449039C --output ./artifacts/sliver-server_windows-amd64.sig --detach-sig ./artifacts/sliver-server_windows-amd64.exe
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_windows-amd64.sig --detach-sig ./artifacts/sliver-client_windows-amd64.exe
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_windows-amd64.sig --detach-sig ./artifacts/seeyoner-exp_windows-amd64.exe
       - name: Windows ARM64 (Client Only)
         run: |
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_windows-arm64.sig --detach-sig ./artifacts/sliver-client_windows-arm64.exe
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_windows-arm64.sig --detach-sig ./artifacts/seeyoner-exp_windows-arm64.exe
 
       # MacOS
       - name: MacOS AMD64
         run: |
           gpg --default-key 4449039C --output ./artifacts/sliver-server_macos-amd64.sig --detach-sig ./artifacts/sliver-server_macos-amd64
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_macos-amd64.sig --detach-sig ./artifacts/sliver-client_macos-amd64
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_macos-amd64.sig --detach-sig ./artifacts/seeyoner-exp_macos-amd64
       - name: Package MacOS ARM64
         run: |
           gpg --default-key 4449039C --output ./artifacts/sliver-server_macos-arm64.sig --detach-sig ./artifacts/sliver-server_macos-arm64
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_macos-arm64.sig --detach-sig ./artifacts/sliver-client_macos-arm64
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_macos-arm64.sig --detach-sig ./artifacts/seeyoner-exp_macos-arm64
 
       # FreeBSD
       - name: FreeBSD AMD64 (Client Only)
         run: |
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_freebsd-amd64.sig --detach-sig ./artifacts/sliver-client_freebsd-amd64.exe
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_freebsd-amd64.sig --detach-sig ./artifacts/seeyoner-exp_freebsd-amd64.exe
       - name: FreeBSD ARM64 (Client Only)
         run: |
-          gpg --default-key 4449039C --output ./artifacts/sliver-client_freebsd-arm64.sig --detach-sig ./artifacts/sliver-client_freebsd-arm64.exe
+          gpg --default-key 4449039C --output ./artifacts/seeyoner-exp_freebsd-arm64.sig --detach-sig ./artifacts/seeyoner-exp_freebsd-arm64.exe
 
       - name: "Publish Release"
         uses: "bishopfox/action-gh-release@v1"

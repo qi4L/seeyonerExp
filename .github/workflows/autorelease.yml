@@ -32,7 +32,7 @@ jobs:
           path: ./seeyoner-exp_*
 
   tagged-release:
-    needs: [servers-build, clients-build]
+    needs: [clients-build]
 
     name: "Tagged Release"
     if: startsWith( github.ref, 'refs/tags/v')
